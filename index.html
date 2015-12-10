@@ -18,22 +18,24 @@
 
 <body>
   <div class="container">
-    <div class="timer">
+    <div id="timer">
     </div>
     <!-- /.timer -->
     <div class="row">
-    <div class="col-md-1 col-md-offset-5 change-time">
-      Change time
+    <div class="col-md-1 col-md-offset-5 change-work">
+      <button class="btn btn-default btn-warning" id="work-increase">+ Work</button>
+      <button class="btn btn-default btn-warning" id="work-decrease">- Work</button>
     </div>
     <!-- /.change-time -->
     <div class="col-md-1 change-break">
-      Change time
+      <button class="btn btn-default btn-warning" id="break-increase">+ Break</button>
+      <button class="btn btn-default btn-warning" id="break-decrease">- Break</button>
     </div>
     <!-- /.change-break -->
 </div> <!-- /.row -->
 <div>
-  <button class="btn btn-primary center-block" id="timer-control">Start</button>
-  <button class="btn btn-warning center-block" id="timer-reset">Reset</button>
+  <button class="btn btn-primary center-block" id="timer-toggle">Start</button>
+  <button class="btn btn-danger center-block" id="timer-reset">Reset</button>
 </div>
   </div> <!-- /.container -->
 </body>
