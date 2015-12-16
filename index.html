@@ -19,40 +19,47 @@
 <body>
   <div class="container">
 
-    <div class="flex-row">
+    <div id="main-box">
+      <div class="row well">
 
-      <div>
+        <div class="col-sm-10 timer-container">
+          <div class="progress">
+            <div class="progress-bar progress-bar-success progress-bar-striped" id="timer-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+            </div>
+          </div>
+          <div class="text-center text-success" id="timer">
+          </div>
+          <!-- /.timer -->
+        </div>
 
-        <div class="progress">
-          <div class="progress-bar progress-bar-success progress-bar-striped" id="timer-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+
+        <div class="col-sm-2">
+          <div class="flex-row">
+            <div class="control-label">
+              Work (min)
+              <div class="control-num" id="work-num"></div>
+            </div>
+            <div class="btn-group-vertical">
+              <button class="btn btn-default btn-warning" id="work-increase">+</button>
+              <button class="btn btn-default btn-warning" id="work-decrease">-</button>
+            </div>
+          </div>
+          <div class="flex-row">
+            <div class="control-label">
+              Break (min)
+              <div class="control-num" id="break-num"></div>
+            </div>
+            <div class="btn-group-vertical">
+              <button class="btn btn-default btn-warning" id="break-increase">+</button>
+              <button class="btn btn-default btn-warning" id="break-decrease">-</button>
+            </div>
           </div>
         </div>
-        <div id="timer">
-        </div>
-        <!-- /.timer -->
+
       </div>
-
-
-      <div>
-        <div class="flex-row">
-          <div id="work-num"></div>
-          <div class="btn-group-vertical">
-            <button class="btn btn-default btn-warning" id="work-increase">+ Work</button>
-            <button class="btn btn-default btn-warning" id="work-decrease">- Work</button>
-          </div>
-        </div>
-        <div class="flex-row">
-          <div id="break-num"></div>
-          <div class="btn-group-vertical">
-            <button class="btn btn-default btn-warning" id="break-increase">+ Break</button>
-            <button class="btn btn-default btn-warning" id="break-decrease">- Break</button>
-          </div>
-        </div>
-      </div>
-
     </div>
 
-    <div class="text-center">
+    <div>
       <div class="btn-group">
         <button class="btn btn-primary" id="timer-toggle">Start</button>
         <button class="btn btn-danger" id="timer-reset">Reset</button>

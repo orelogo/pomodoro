@@ -1,5 +1,5 @@
-var workMillisec = 4000; // time of pomodoro (work portion)
-var breakMillisec = 2000; // time of break
+var workMillisec = 120000; // time of pomodoro (work portion)
+var breakMillisec = 60000; // time of break
 
 var pausedMillisec = workMillisec; // time remaining, used when paused
 var countdownMillisec = pausedMillisec; // total countdown in milliseconds
@@ -88,25 +88,24 @@ function printTime(what) {
     var displayTime = ""; // time to be displayed
     if (displayTimerHour > 0) // add hour column if necessary
       displayTime += displayTimerHour + "h:";
-    displayTime += displayTimerMin + "m:" + displayTimerSec + "s." +
-      displayTimerMillisec + "ms";
+    if (displayTimerMin > 0) // add min column if necessary
+      displayTime += displayTimerMin + "m:";
+    if ((displayTimerSec + "").length < 2)
+      displayTime += 0; // add leading zero to min if necessary
+    displayTime += displayTimerSec + "s.";
+    if ((displayTimerMillisec + "").length < 3)
+      displayTime += 0; // add leading zero to miilisec if necessary
+    if ((displayTimerMillisec + "").length < 2)
+      displayTime += 0; // add another leading zero to millisec id necessary
+    displayTime += displayTimerMillisec + "ms";
     $("#timer").text(displayTime);
     $("#timer-bar").css("width", progressBarPercent + "%");
   }
 
   if (what === "controls") {
     parseTotal("controls");
-    var displayWork = "";
-    if (displayWorkHour > 0) // add hour column if necessary
-      displayWork += displayWorkHour + "h:";
-    displayWork += displayWorkMin + "m:" + displayWorkSec + "s";
-    $("#work-num").text(displayWork);
-
-    var displayBreak = "";
-    if (displayBreakHour > 0) // add hour column if necessary
-      displayBreak += displayBreakHour + "h:";
-    displayBreak += displayBreakMin + "m:" + displayBreakSec + "s";
-    $("#break-num").text(displayBreak);
+    $("#work-num").text(displayWorkMin);
+    $("#break-num").text(displayBreakMin);
   }
 
 }
@@ -152,7 +151,7 @@ function resetTimerToWork() {
   workInterval = true; // reset to work interval
   // reset time for timer and for display
   countdownMillisec = pausedMillisec = workMillisec;
-  $("#timer").css("color", "green");
+  $("#timer").css("color", "5cb85c");
   $("#timer-toggle").text("Start");
   printTime("timer");
 }
@@ -178,12 +177,12 @@ function switchInterval() {
   if (workInterval) { // chage to break interval
     countdownMillisec = pausedMillisec = breakMillisec;
     workInterval = false;
-    $("#timer").css("color", "red");
+    $("#timer").css("color", "#5bc0de");
     $("#timer-bar").addClass("progress-bar-info");
   } else { // change to work interval
     countdownMillisec = pausedMillisec = workMillisec;
     workInterval = true;
-    $("#timer").css("color", "green");
+    $("#timer").css("color", "5cb85c");
     $("#timer-bar").removeClass("progress-bar-info");
   }
   startTimer(); // start new timer
@@ -196,7 +195,7 @@ function switchInterval() {
  */
 function workIncrease() {
   if (!timerRunning) {
-    workMillisec += 1000;
+    workMillisec += 60000;
     // if on break work, reset timer to work
     if (workInterval)
       resetTimerToWork();
@@ -211,7 +210,7 @@ function workIncrease() {
  */
 function workDecrease() {
   if (!timerRunning) {
-    workMillisec -= 1000;
+    workMillisec -= 60000;
     // work time cannot be less than 0
     if (workMillisec <= 0)
       workMillisec = 0;
@@ -229,7 +228,7 @@ function workDecrease() {
  */
 function breakIncrease() {
   if (!timerRunning) {
-    breakMillisec += 1000;
+    breakMillisec += 60000;
     // if on break interval, reset timer to break
     if (!workInterval)
       resetTimerToBreak();
@@ -244,7 +243,7 @@ function breakIncrease() {
  */
 function breakDecrease() {
   if (!timerRunning) {
-    breakMillisec -= 1000;
+    breakMillisec -= 60000;
     if (breakMillisec <= 0)
       breakMillisec = 0;
     // if on break interval, reset timer to break

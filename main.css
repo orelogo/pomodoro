@@ -1,5 +1,19 @@
+html, body {
+  background-image: url('https://images.unsplash.com/photo-1428660285748-340f4e33d608?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&w=1080&fit=max&s=b595b673ce8c8efdeddb76b56da5bba8');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+}
+.container {
+  text-align: center;
+}
 #timer {
-  color: green;
+  color: #5cb85c;
+  font-size: 2.5em;
 }
 #timer-toggle {
   width: 70px;
@@ -7,10 +21,10 @@
 #timer-reset {
   width: 70px;
 }
-
 .flex-row {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  padding: 5px;
 }
 .controls {
   display: flex;
@@ -23,7 +37,21 @@
   -o-transition: none;
   transition: none;
 }
-
-.progress {
-  flex-grow: 5;
+.timer-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding-top: 3em;
+}
+#main-box {
+  margin-top: 20%;
+}
+.control-num {
+  font-size: 2em;
+}
+.well {
+  opacity: 0.8;
+}
+.control-label {
+  padding: 5px;
 }
