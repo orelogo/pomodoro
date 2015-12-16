@@ -1,7 +1,29 @@
 #timer {
   color: green;
 }
-
 #timer-toggle {
   width: 70px;
+}
+#timer-reset {
+  width: 70px;
+}
+
+.flex-row {
+  display: flex;
+  justify-content: space-around;
+}
+.controls {
+  display: flex;
+  flex-direction: column;
+}
+#timer-bar {
+  -webkit-transition: none;
+  -moz-transition: none;
+  -ms-transition: none;
+  -o-transition: none;
+  transition: none;
+}
+
+.progress {
+  flex-grow: 5;
 }

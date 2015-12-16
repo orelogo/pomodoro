@@ -18,26 +18,48 @@
 
 <body>
   <div class="container">
-    <div id="timer">
+
+    <div class="flex-row">
+
+      <div>
+
+        <div class="progress">
+          <div class="progress-bar progress-bar-success progress-bar-striped" id="timer-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+          </div>
+        </div>
+        <div id="timer">
+        </div>
+        <!-- /.timer -->
+      </div>
+
+
+      <div>
+        <div class="flex-row">
+          <div id="work-num"></div>
+          <div class="btn-group-vertical">
+            <button class="btn btn-default btn-warning" id="work-increase">+ Work</button>
+            <button class="btn btn-default btn-warning" id="work-decrease">- Work</button>
+          </div>
+        </div>
+        <div class="flex-row">
+          <div id="break-num"></div>
+          <div class="btn-group-vertical">
+            <button class="btn btn-default btn-warning" id="break-increase">+ Break</button>
+            <button class="btn btn-default btn-warning" id="break-decrease">- Break</button>
+          </div>
+        </div>
+      </div>
+
     </div>
-    <!-- /.timer -->
-    <div class="row">
-    <div class="col-md-1 col-md-offset-5 change-work">
-      <button class="btn btn-default btn-warning" id="work-increase">+ Work</button>
-      <button class="btn btn-default btn-warning" id="work-decrease">- Work</button>
+
+    <div class="text-center">
+      <div class="btn-group">
+        <button class="btn btn-primary" id="timer-toggle">Start</button>
+        <button class="btn btn-danger" id="timer-reset">Reset</button>
+      </div>
     </div>
-    <!-- /.change-time -->
-    <div class="col-md-1 change-break">
-      <button class="btn btn-default btn-warning" id="break-increase">+ Break</button>
-      <button class="btn btn-default btn-warning" id="break-decrease">- Break</button>
-    </div>
-    <!-- /.change-break -->
-</div> <!-- /.row -->
-<div>
-  <button class="btn btn-primary center-block" id="timer-toggle">Start</button>
-  <button class="btn btn-danger center-block" id="timer-reset">Reset</button>
-</div>
-  </div> <!-- /.container -->
+  </div>
+  <!-- /.container -->
 </body>
 
 </html>
