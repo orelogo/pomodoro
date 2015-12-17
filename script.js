@@ -1,5 +1,5 @@
-var workMillisec = 5000; // time of pomodoro (work portion)
-var breakMillisec = 4000; // time of break
+var workMillisec = 25 * 60 * 1000; // time of work interval (in millisec)
+var breakMillisec = 5 * 60 * 1000; // time of break interval (in millisec)
 
 var pausedMillisec = workMillisec; // time remaining, used when paused
 var countdownMillisec = pausedMillisec; // total countdown in milliseconds
