@@ -1,5 +1,5 @@
-html, body {
-  background-image: url('https://images.unsplash.com/photo-1428660285748-340f4e33d608?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&w=1080&fit=max&s=b595b673ce8c8efdeddb76b56da5bba8');
+body {
+  background-image: url('media/background_clock.jpg');
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center;
@@ -7,8 +7,6 @@ html, body {
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
-}
-.container {
   text-align: center;
 }
 #timer {
