@@ -123,7 +123,7 @@ function resetTimerToWork() {
   workInterval = true; // reset to work interval
   // reset time for timer and for display
   countdownMillisec = pausedMillisec = workMillisec;
-  $("#timer").css("color", "5cb85c");
+  $("#timer").css("color", "#5cb85c");
   $("#timer-toggle").text("Start");
   printTime();
 }
