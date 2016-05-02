@@ -13,11 +13,8 @@ body {
   color: #5cb85c;
   font-size: 2.5em;
 }
-#timer-toggle {
-  width: 70px;
-}
-#timer-reset {
-  width: 70px;
+#timer-toggle, #timer-reset, #timer-reset-interval {
+  width: 120px;
 }
 .flex-row {
   display: flex;

@@ -5,10 +5,11 @@ var pausedMillisec = workMillisec; // time remaining, used when paused
 var countdownMillisec = pausedMillisec; // total countdown in milliseconds
 var displayTimerHour, displayTimerMin, displayTimerSec, displayTimerMillisec;
 var displayWorkMin, displayBreakMin; // min displayed in control section
-var progressBarPercent // percentage of progress bar to display
+var progressBarPercent; // percentage of progress bar to display
 var timer; // id for timer
-var workInterval = true; // true if work interval, false if break interval
-var timerRunning = false; // true if timer running, false if not
+var isWorkInterval = true; // true if work interval, false if break interval
+var isTimerRunning = false; // true if timer running, false if not
+var elapsedWorkIntervals = 0; // how many work intervals have elapsed
 
 /**
  * Start the timer.
@@ -45,14 +46,17 @@ function parseTime() {
  * Update the progress bar percentage.
  */
 function updateProgressBarPercent() {
-  if (workInterval) {
+  if (isWorkInterval) {
     progressBarPercent = (workMillisec - countdownMillisec) / workMillisec *
       100;
-  } else {
+  }
+  else {
     progressBarPercent = 100 - ((breakMillisec - countdownMillisec) /
       breakMillisec * 100);
   }
-
+  if (isNaN(progressBarPercent)) {
+    progressBarPercent = 0;
+  }
 }
 
 /**
@@ -77,6 +81,8 @@ function printTime() {
   displayTime += displayTimerMillisec + "ms";
 
   $("#timer").text(displayTime);
+  $("#elapsed-work-intervals").text("Pomodoros completed: " +
+      elapsedWorkIntervals);
   $("#timer-bar").css("width", progressBarPercent + "%");
 }
 
@@ -102,40 +108,59 @@ function pauseTimer() {
  * Toggle between pause and unpause timer.
  */
 function toggleTimer() {
-  if (timerRunning) {
+  if (isTimerRunning) {
     pauseTimer();
     $("#timer-toggle").text("Start");
-    timerRunning = false;
+    isTimerRunning = false;
   } else {
     startTimer();
     $("#timer-toggle").text("Pause");
-    timerRunning = true;
+    isTimerRunning = true;
   }
 }
 
 /**
- * Reset time to work beginning of work interval
+ * Reset the current timer interval.
  */
-function resetTimerToWork() {
+function resetInterval() {
   clearInterval(timer);
-  timerRunning = false; // timer stopped
+  $("#timer-toggle").text("Start");
+  isTimerRunning = false;
 
-  workInterval = true; // reset to work interval
+  if (isWorkInterval) {
+    countdownMillisec = pausedMillisec = workMillisec;
+  }
+  else {
+    countdownMillisec = pausedMillisec = breakMillisec;
+  }
+  printTime();
+}
+
+/**
+ * Completely reset the timer.
+ */
+function resetTimer() {
+  clearInterval(timer);
+  isTimerRunning = false; // timer stopped
+
+  isWorkInterval = true; // reset to work interval
+  elapsedWorkIntervals = 0; // reset elapsed work intervals
   // reset time for timer and for display
   countdownMillisec = pausedMillisec = workMillisec;
   $("#timer").css("color", "#5cb85c");
+  $("#timer-bar").removeClass("progress-bar-info");
   $("#timer-toggle").text("Start");
   printTime();
 }
 
 /**
  * Reset the timer to break beginning of break interval. Used in
- * breakIncrease() and breakDecrease() methds during a paused break interval.
+ * breakIncrease() and breakDecrease() methods during a paused break interval.
  */
 function resetTimerToBreak(interval) {
   clearInterval(timer);
 
-  workInterval = false; // reset to break interval
+  isWorkInterval = false; // reset to break interval
   // reset time for timer and for display
   countdownMillisec = pausedMillisec = breakMillisec;
   printTime();
@@ -147,15 +172,16 @@ function resetTimerToBreak(interval) {
  */
 function switchInterval() {
   clearInterval(timer); // stop timer
-  if (workInterval) { // chage to break interval
+  if (isWorkInterval) { // chage to break interval
+    elapsedWorkIntervals += 1;
     countdownMillisec = pausedMillisec = breakMillisec;
-    workInterval = false;
+    isWorkInterval = false;
     $("#timer").css("color", "#5bc0de");
     $("#timer-bar").addClass("progress-bar-info");
   } else { // change to work interval
     countdownMillisec = pausedMillisec = workMillisec;
-    workInterval = true;
-    $("#timer").css("color", "5cb85c");
+    isWorkInterval = true;
+    $("#timer").css("color", "#5cb85c");
     $("#timer-bar").removeClass("progress-bar-info");
   }
   document.getElementById("timer-bell").play(); // play bell sound
@@ -168,11 +194,9 @@ function switchInterval() {
  * new time displayed.
  */
 function workIncrease() {
-  if (!timerRunning) {
+  if (!isTimerRunning) {
     workMillisec += 60000;
-    // if on break work, reset timer to work
-    if (workInterval)
-      resetTimerToWork();
+    resetInterval();
     printControls();
   }
 }
@@ -183,14 +207,13 @@ function workIncrease() {
  * new time displayed.
  */
 function workDecrease() {
-  if (!timerRunning) {
+  if (!isTimerRunning) {
     workMillisec -= 60000;
     // work time cannot be less than 0
     if (workMillisec <= 0)
       workMillisec = 0;
     // if on work interval, reset timer to work
-    if (workInterval)
-      resetTimerToWork();
+    resetInterval();
     printControls();
   }
 }
@@ -201,11 +224,9 @@ function workDecrease() {
  * new time displayed.
  */
 function breakIncrease() {
-  if (!timerRunning) {
+  if (!isTimerRunning) {
     breakMillisec += 60000;
-    // if on break interval, reset timer to break
-    if (!workInterval)
-      resetTimerToBreak();
+    resetInterval();
     printControls();
   }
 }
@@ -216,13 +237,11 @@ function breakIncrease() {
  * new time displayed.
  */
 function breakDecrease() {
-  if (!timerRunning) {
+  if (!isTimerRunning) {
     breakMillisec -= 60000;
     if (breakMillisec <= 0)
       breakMillisec = 0;
-    // if on break interval, reset timer to break
-    if (!workInterval)
-      resetTimerToBreak();
+    resetInterval();
     printControls();
   }
 }
@@ -231,10 +250,10 @@ $(document).ready(function() {
   printTime();
   printControls();
 
-  // start/pause button
-  $("#timer-toggle").click(toggleTimer);
-  // reset button
-  $("#timer-reset").click(resetTimerToWork);
+
+  $("#timer-toggle").click(toggleTimer); // start/pause button
+  $("#timer-reset-interval").click(resetInterval); // reset interval button
+  $("#timer-reset").click(resetTimer); // reset button
 
   // interval control buttons
   $("#work-increase").click(workIncrease);
